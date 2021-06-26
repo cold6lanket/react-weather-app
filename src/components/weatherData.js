@@ -1,14 +1,7 @@
 import React, { Component } from 'react';
-import { Spinner } from 'reactstrap';
+
 
 class WeatherData extends Component {
-    state = {
-        loading: true
-    }
-
-    componentDidMount() {
-        this.setState({loading: false});
-    }
 
     render() {
         const { weather, iconPicker, selected } = this.props;
@@ -31,7 +24,7 @@ class WeatherData extends Component {
                     <div className="weather-temp">
                         <span><img src={`https://ssl.gstatic.com/onebox/weather/64/${iconPicker(status)}.png`} alt="weather" /></span>
                         <div className="temp">
-                        {this.state.loading ? <Spinner/> : Math.round(weather.list[selected ? selected : 0].main.temp)}°c
+                        {Math.round(weather.list[selected ? selected : 0].main.temp)}°c
                         </div>
                     </div>
                     <div className='small-info'>

@@ -8,6 +8,7 @@ import WeatherData from './components/weatherData';
 import GraphData from './components/graphData';
 import ForecastData from './components/forecastData';
 import DefaultPage from './components/defaultPage';
+import ErrorBoundary from './components/errorBoundary';
 
 class App extends Component {
   state = {
@@ -15,30 +16,38 @@ class App extends Component {
     term: '',
     loading: true,
     selected: null,
-    error: false
+    error: false,
   }
 
   API = '18e3692cd971d0aec5971fc2d55d5f54';
   URL = 'https://api.openweathermap.org/data/2.5/';
 
-  searchCity = async () => {
-    if (this.state.term) {
+  searchCity = async (e) => {
+    const { term } = this.state;
+
+    if (e.key === 'Enter' && term && isNaN(term)) {
+      
       await fetch(`${this.URL}forecast?q=${this.state.term}&units=metric&APPID=${this.API}`)
-        .then(res => res.json())
-        .then(result => {
-          console.log(result);
-          this.setState({
-            data: result,
-            term: '',
-            loading: false,
-            selected: null
-          });
-        })
-        .catch(err => {
-          this.setState({
-            error: true
-          });
-        });
+            .then(res => {
+              if (res.ok) return res.json();
+
+              throw new Error('Something went wrong');
+            })
+            .then(result => {
+              this.setState({
+                data: result,
+                term: '',
+                loading: false,
+                selected: null,
+              });
+            })
+            .catch(err => {
+              this.setState({
+                error: true,
+                term: '',
+              });
+            });
+     
     }
   }
 
@@ -75,9 +84,12 @@ class App extends Component {
     if (data) {
       if (parseInt(data.list[0].dt_txt.slice(10, 13)) > 17) {
         classNames += ' cold';
-        console.log(classNames);
       }
-    } 
+    }
+    
+    // if (this.state.error) {
+    //    return <DefaultPage/>
+    // }
 
     return (
       <div className="app">
@@ -89,7 +101,7 @@ class App extends Component {
           />
           <div className="main-data">
             {!data ? <DefaultPage message={this.state.error} /> : (
-              <>
+              <ErrorBoundary>
                 <WeatherData 
                   iconPicker={this.iconPicker}
                   dateBuilder={this.dateBuilder} 
@@ -102,8 +114,10 @@ class App extends Component {
                   onSelectUpdate={this.onSelectUpdate}
                   data={this.state.data} 
                 />
-                <GraphData data={this.state.data}/>
-              </>
+                <GraphData 
+                  data={this.state.data}
+                />
+              </ErrorBoundary>
             )}
           </div>
         </main>

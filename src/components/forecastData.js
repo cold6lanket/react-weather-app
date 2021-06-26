@@ -3,7 +3,7 @@ import React from 'react';
 function ForecastData({ data, iconPicker, onSelectUpdate }) {
     if (!data) return null;
 
-    const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+    const days = ['Sunday', 'Monday', 'Tuesday', 'Wed', 'Thursday', 'Friday', 'Saturday'];
 
     const elements = data.list.map((el, index) => {
         return (

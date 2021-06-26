@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {Button, InputGroup, Input} from 'reactstrap';
+import { InputGroup, Input} from 'reactstrap';
 
 class SearchBar extends Component{
 
@@ -17,11 +17,8 @@ class SearchBar extends Component{
                         value={this.props.term} 
                         onChange={this.onValueChange}
                         placeholder="search..." 
+                        onKeyPress={(e) => this.props.onSearch(e)}
                     />
-                    <Button
-                        onClick={() => this.props.onSearch()} 
-                        color="primary"
-                    >Search</Button>
                 </InputGroup>
             </div>
         );
