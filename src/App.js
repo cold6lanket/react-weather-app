@@ -19,7 +19,7 @@ class App extends Component {
     error: false,
   }
 
-  API = '18e3692cd971d0aec5971fc2d55d5f54';
+  API = '18';
   URL = 'https://api.openweathermap.org/data/2.5/';
 
   searchCity = async (e) => {
