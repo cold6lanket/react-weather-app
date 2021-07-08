@@ -58,16 +58,6 @@ class App extends Component {
     });
   }
 
-  componentWillUnmount() {
-
-  }
-
-  // componentDidUpdate(prevState) {
-  //   if (this.state.data !== prevState.data) {
-  //     this.searchCity();
-  //   }
-  // }
-
   onTermUpdate = (term) => {
     this.setState({term});
   }
