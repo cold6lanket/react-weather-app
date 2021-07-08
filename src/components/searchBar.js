@@ -1,25 +1,26 @@
 import React, { Component } from 'react';
-import { InputGroup, Input} from 'reactstrap';
+import { FormGroup, Input, FormText} from 'reactstrap';
 
 class SearchBar extends Component{
-
     onValueChange = (e) => {
         const text = e.target.value;
         this.props.onTermUpdate(text)
     }
 
-
     render() {
         return (
             <div className="search-bar">
-                <InputGroup>
+                <FormGroup>
                     <Input
+                        color="red"
                         value={this.props.term} 
                         onChange={this.onValueChange}
                         placeholder="search..." 
                         onKeyPress={(e) => this.props.onSearch(e)}
                     />
-                </InputGroup>
+                    {this.props.error ? <FormText color="white">Incorrect input data. Try again</FormText> : null}
+                </FormGroup>
+                
             </div>
         );
     }

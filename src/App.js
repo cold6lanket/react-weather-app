@@ -1,6 +1,3 @@
-//import {Button, InputGroup, Input} from 'reactstrap';
-//import GetWeather from './services/getWeather';
-//import { Spinner } from 'reactstrap';
 import SearchBar from './components/searchBar';
 
 import { Component } from 'react';
@@ -9,6 +6,11 @@ import GraphData from './components/graphData';
 import ForecastData from './components/forecastData';
 import DefaultPage from './components/defaultPage';
 import ErrorBoundary from './components/errorBoundary';
+
+
+const API = process.env.REACT_APP_WEATHER_API_KEY;
+const URL = 'https://api.openweathermap.org/data/2.5/';
+
 
 class App extends Component {
   state = {
@@ -19,15 +21,13 @@ class App extends Component {
     error: false,
   }
 
-  API = '18';
-  URL = 'https://api.openweathermap.org/data/2.5/';
 
   searchCity = async (e) => {
     const { term } = this.state;
 
     if (e.key === 'Enter' && term && isNaN(term)) {
       
-      await fetch(`${this.URL}forecast?q=${this.state.term}&units=metric&APPID=${this.API}`)
+      await fetch(`${URL}forecast?q=${this.state.term}&units=metric&APPID=${API}`)
             .then(res => {
               if (res.ok) return res.json();
 
@@ -39,6 +39,7 @@ class App extends Component {
                 term: '',
                 loading: false,
                 selected: null,
+                error: false
               });
             })
             .catch(err => {
@@ -56,6 +57,16 @@ class App extends Component {
       error: true
     });
   }
+
+  componentWillUnmount() {
+
+  }
+
+  // componentDidUpdate(prevState) {
+  //   if (this.state.data !== prevState.data) {
+  //     this.searchCity();
+  //   }
+  // }
 
   onTermUpdate = (term) => {
     this.setState({term});
@@ -87,14 +98,11 @@ class App extends Component {
       }
     }
     
-    // if (this.state.error) {
-    //    return <DefaultPage/>
-    // }
-
     return (
       <div className="app">
         <main className={classNames}>
           <SearchBar
+            error={this.state.error}
             term={this.state.term} 
             onSearch={this.searchCity} 
             onTermUpdate={this.onTermUpdate} 
